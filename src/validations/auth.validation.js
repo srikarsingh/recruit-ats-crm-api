@@ -1,18 +1,23 @@
 const Joi = require('joi');
-const { password } = require('./custom.validation');
+const { password,objectId } = require('./custom.validation');
 
 const register = {
   body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required().custom(password),
-    name: Joi.string().required(),
+    user_email: Joi.string().required().email(),
+    user_password: Joi.string().required().custom(password),
+    user_name: Joi.string().required(),
+    user_role: Joi.string().required(),
+    account_id: Joi.string().custom(objectId),
+    user_status: Joi.string().required(),
+    user_owner: Joi.string().custom(objectId),
+    associated_teams:Joi.required()
   }),
 };
-
+  
 const login = {
   body: Joi.object().keys({
-    email: Joi.string().required(),
-    password: Joi.string().required(),
+    user_email: Joi.string().required().email(),
+    user_password: Joi.string().required().custom(password),
   }),
 };
 
@@ -30,7 +35,7 @@ const refreshTokens = {
 
 const forgotPassword = {
   body: Joi.object().keys({
-    email: Joi.string().email().required(),
+    user_email: Joi.string().email().required(),
   }),
 };
 
@@ -39,7 +44,7 @@ const resetPassword = {
     token: Joi.string().required(),
   }),
   body: Joi.object().keys({
-    password: Joi.string().required().custom(password),
+    user_password: Joi.string().required().custom(password),
   }),
 };
 

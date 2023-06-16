@@ -13,7 +13,6 @@ const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
 
 
-
 const app = express();
 
 app.use(morgan.successHandler);
@@ -44,21 +43,21 @@ app.use(passport.initialize());
 passport.use('jwt', jwtStrategy);
 
 // v1 api routes
-app.use('/api/', routes);
+app.use('/v1/', routes);
 
 //error handling
-// app.use((err, req, res, next) => {
-//   let statusCode = httpStatus.INTERNAL_SERVER_ERROR
-//   let message =  httpStatus[statusCode]
-//   let response = {
-//     code: statusCode,
-//     message
-//   };
-//   if(err.stack){
-//     response['stack'] = err.stack
-//   }
-//   res.status(statusCode).send(response);
-// })
+app.use((err, req, res, next) => {
+  let statusCode = httpStatus.INTERNAL_SERVER_ERROR
+  let message =  httpStatus[statusCode]
+  let response = {
+    code: statusCode,
+    message
+  };
+  if(err.stack){
+    response['stack'] = err.stack
+  }
+  res.status(statusCode).send(response);
+})
 
 // send back a 404 error for any unknown api request
 app.use((req, res, next) => {
@@ -70,6 +69,5 @@ app.use(errorConverter);
 
 // handle error
 app.use(errorHandler);
-
 
 module.exports = app;
