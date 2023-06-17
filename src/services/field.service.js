@@ -32,7 +32,7 @@ const queryFields = async (filter, options) => {
  */
 const getFields = async (entity) => {
   return Field.find({
-    "entity": entity
+    "entity_type": entity
   });
 };
 
